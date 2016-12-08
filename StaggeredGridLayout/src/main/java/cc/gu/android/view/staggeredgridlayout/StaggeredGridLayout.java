@@ -26,7 +26,6 @@ import java.util.List;
 public class StaggeredGridLayout extends FrameLayout {
     public static final int HORIZONTAL = 0;
     public static final int VERTICAL = 1;
-    private static final int DEFAULT_CHILD_GRAVITY = Gravity.LEFT | Gravity.TOP;
 
     public StaggeredGridLayout(Context context) {
         super(context);
@@ -72,7 +71,7 @@ public class StaggeredGridLayout extends FrameLayout {
     @ViewDebug.ExportedProperty(category = "measurement")
     private int mOrientation = VERTICAL;
     @ViewDebug.ExportedProperty(category = "measurement")
-    private int gravity = DEFAULT_CHILD_GRAVITY;
+    private int gravity = 0;
 
     public void setFullable(boolean fullable) {
         if (this.fullable != fullable) {

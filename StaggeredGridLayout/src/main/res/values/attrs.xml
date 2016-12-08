@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources >
+    <declare-styleable name="StaggeredGridLayout">
+        <attr name="android:orientation"/>
+        <attr name="android:gravity"/>
+        <attr name="fullable" format="boolean"/>
+        <attr name="unit_size" format="dimension"/>
+        <attr name="count" format="integer"/>
+    </declare-styleable>
+    <attr name="StaggeredGridLayout" format="reference"/>
+    <style name="StaggeredGridLayout">
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">left|top</item>
+        <item name="fullable">true</item>
+        <item name="unit_size">1px</item>
+        <item name="count">0</item>
+    </style>
+</resources>

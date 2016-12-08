@@ -26,8 +26,7 @@ import java.util.List;
 public class StaggeredGridLayout extends FrameLayout {
     public static final int HORIZONTAL = 0;
     public static final int VERTICAL = 1;
-//    private static final int DEFAULT_CHILD_GRAVITY = Gravity.LEFT | Gravity.TOP;
-    private static final int DEFAULT_CHILD_GRAVITY = Gravity.CENTER;
+    private static final int DEFAULT_CHILD_GRAVITY = Gravity.LEFT | Gravity.TOP;
 
     public StaggeredGridLayout(Context context) {
         super(context);

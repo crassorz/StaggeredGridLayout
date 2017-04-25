@@ -27,6 +27,15 @@ public class StaggeredGridLayout extends FrameLayout {
     public static final int HORIZONTAL = 0;
     public static final int VERTICAL = 1;
 
+    @ViewDebug.ExportedProperty(category = "measurement")
+    private int staggeredSize = 1, staggeredCount = 0;
+    @ViewDebug.ExportedProperty(category = "measurement")
+    private boolean fullable = true;
+    @ViewDebug.ExportedProperty(category = "measurement")
+    private int mOrientation = VERTICAL;
+    @ViewDebug.ExportedProperty(category = "measurement")
+    private int gravity = 0;
+
     public StaggeredGridLayout(Context context) {
         super(context);
         init(null, 0, R.style.StaggeredGridLayout);
@@ -63,15 +72,6 @@ public class StaggeredGridLayout extends FrameLayout {
             setGravity(index);
         }
     }
-
-    @ViewDebug.ExportedProperty(category = "measurement")
-    private int staggeredSize = 1, staggeredCount = 0;
-    @ViewDebug.ExportedProperty(category = "measurement")
-    private boolean fullable = true;
-    @ViewDebug.ExportedProperty(category = "measurement")
-    private int mOrientation = VERTICAL;
-    @ViewDebug.ExportedProperty(category = "measurement")
-    private int gravity = 0;
 
     public void setFullable(boolean fullable) {
         if (this.fullable != fullable) {
@@ -186,8 +186,7 @@ public class StaggeredGridLayout extends FrameLayout {
             int h = child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
             checkSpase:
             {
-                for (int j = 0; j < spaces.size(); j++) {
-                    Rect space = spaces.get(j);
+                for (Rect space : spaces) {
                     if (w <= space.width() && h <= space.height()) {
                         layout.set(space.left, space.top, space.left + w, space.top + h);
                         break checkSpase;
@@ -244,17 +243,15 @@ public class StaggeredGridLayout extends FrameLayout {
                     int k = j;
                     j--;
                     Rect rect;
-                    if (fullable) {
-                        if (layout.left > space.left) {
-                            rect = new Rect(space.left, space.top, layout.left, space.bottom);
-                            spaces.add(k, rect);
-                            Log.e("AutoGrid", String.format("add %s", rect));
-                        }
-                        if (layout.top > space.top) {
-                            rect = new Rect(space.left, space.top, space.right, layout.top);
-                            spaces.add(k, rect);
-                            Log.e("AutoGrid", String.format("add %s", rect));
-                        }
+                    if ((v || fullable) && layout.left > space.left) {
+                        rect = new Rect(space.left, space.top, layout.left, space.bottom);
+                        spaces.add(k, rect);
+                        Log.e("AutoGrid", String.format("add %s", rect));
+                    }
+                    if ((!v || fullable) && layout.top > space.top) {
+                        rect = new Rect(space.left, space.top, space.right, layout.top);
+                        spaces.add(k, rect);
+                        Log.e("AutoGrid", String.format("add %s", rect));
                     }
                     if (layout.right < space.right) {
                         rect = new Rect(layout.right, space.top, space.right, space.bottom);
@@ -275,6 +272,13 @@ public class StaggeredGridLayout extends FrameLayout {
                         Log.e("AutoGrid", String.format("add %s", rect));
                     }
                 } else {
+                    if (!fullable) {
+                        if (!v && space.left < layout.left) {
+                            space.left = layout.left;
+                        } else if (v && space.top < layout.top) {
+                            space.top = layout.top;
+                        }
+                    }
                     for (int k = j + 1; k < spaces.size(); k++) {
                         if (space.contains(spaces.get(k))) {
                             spaces.remove(k);
